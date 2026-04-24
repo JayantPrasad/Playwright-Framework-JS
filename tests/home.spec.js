@@ -7,24 +7,25 @@ test('Verify Login is done', async ({ browser }) => {
     await page.getByPlaceholder('you@email.com').fill('jayant.prasad.9920@gmail.com')
     await page.locator('#password').fill('Hanumanji@1990')
     await page.locator('#login-btn').click()
-    await page.locator('.tracking-tight').filter({ hasText: 'EventHub' })
-
+    await page.waitForLoadState('networkidle')
+    await expect(page.locator('.tracking-tight').filter({ hasText: 'EventHub' })).toBeVisible()
+    await context.close()
 });
 test('Verify Home Page WebElements', async ({ page }) => {
     await page.goto('https://eventhub.rahulshettyacademy.com/login')
     await page.getByPlaceholder('you@email.com').fill('jayant.prasad.9920@gmail.com')
     await page.locator('#password').fill('Hanumanji@1990')
     await page.locator('#login-btn').click()
+    await page.waitForLoadState('networkidle')
     await page.locator('.justify-center').filter({ hasText: 'Browse Events →' })
     await page.locator('.justify-center').filter({ hasText: 'My Bookings' })
     await page.locator('.justify-center').filter({ hasText: 'Explore All Events' })
     //VERIFY ALL BOOK NOW BUTTONS ARE VISIBLE
-    await page.waitForLoadState('networkidle')
     let counter= await page.locator('#book-now-btn').count()
     console.log(counter)
-    await expect(counter).toBe(3)
+    await expect(counter).toBe(4)
     while(counter>0){
-        await page.locator('book-now-btn').nth(counter-1)
+        await page.locator('#book-now-btn').nth(counter-1)
         counter--
     }
     await expect(page.locator('#nav-home')).toHaveText('Home')
