@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test')
+const jsonTD= JSON.parse(JSON.stringify(require('../Utils/MyBookingTD.json')))
 
 test('My Booking navigation and validate clear booking and click', async ({ browser }) => {
     const context = await browser.newContext()
@@ -62,9 +63,9 @@ test('Create My booking', async ({ browser }) => {
 test('Cancel Booking', async ({ browser }) => {
     const context = await browser.newContext()
     const page = await context.newPage()
-    await page.goto('https://eventhub.rahulshettyacademy.com/login')
-    await page.getByPlaceholder('you@email.com').fill('jayant.prasad.9920@gmail.com')
-    await page.locator('#password').fill('Hanumanji@1990')
+    await page.goto(jsonTD.url)
+    await page.getByPlaceholder('you@email.com').fill(jsonTD.emailId)
+    await page.locator('#password').fill(jsonTD.password)
     await page.locator('#login-btn').click()
     await page.waitForLoadState('networkidle')
     await page.locator('#nav-bookings').click()
